@@ -22,6 +22,11 @@ if __name__ == '__main__':
     # Pornirea aplicației PyQt
     pyqt_process = run_pyqt_app()
 
-    # Așteaptă terminarea ambelor procese
-    flask_process.wait()
-    pyqt_process.wait()
+    # Monitorizare pentru a închide Flask când se încheie PyQt
+    try:
+        while pyqt_process.poll() is None:
+            time.sleep(5)  # Verifică starea la fiecare secundă
+    finally:
+        # Oprește Flask dacă PyQt s-a terminat
+        flask_process.terminate()
+        flask_process.wait()  # Așteaptă terminarea procesului Flask
