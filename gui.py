@@ -12,7 +12,7 @@ class MapWindow(QMainWindow):
 
     def initUI(self):
         self.setWindowTitle('Interactive Map')
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 950, 600)
 
         # Crearea layout-ului principal
         main_layout = QHBoxLayout()
@@ -21,7 +21,6 @@ class MapWindow(QMainWindow):
         left_layout = QVBoxLayout()
 
         # Crearea unui QHBoxLayout pentru label și text_field
-        field_layout1 = QHBoxLayout()
         field_layout2 = QHBoxLayout()
 
         layout_bedrooms = QHBoxLayout()
@@ -41,61 +40,96 @@ class MapWindow(QMainWindow):
         validator.setNotation(QDoubleValidator.StandardNotation)
 
         # Crearea și adăugarea etichetei și câmpului de text în field_layout1
-        self.label1 = QLabel("un numar:")
-        self.text_field1 = QLineEdit()
-        self.text_field1.setValidator(validator)
+        self.label_bedrooms = QLabel("Bedrooms:")
+        self.field_bedrooms = QLineEdit()
+        self.field_bedrooms.setValidator(validator)
 
-        field_layout1.addWidget(self.label1)
-        field_layout1.addWidget(self.text_field1)
+        self.label_bathrooms = QLabel("Bathrooms:")
+        self.field_bathrooms = QLineEdit()
+        self.field_bathrooms.setValidator(validator)
 
-        # ----------------
-        """ 
-        label_bedrooms
-        field_bedrooms
-        
-        label_bathrooms
-        field_bathrooms
-        
-        label_sqm_living
-        field_sqm_living
-        
-        label_floors
-        field_floors
-        
-        label_condition
-        field_condition
-        
-        label_grade
-        field_grade
-        
-        label_yr_built
-        field_yr_built
-        
-        label_yr_renovated
-        field_yr_renovated
-        
-        label_sqm_above
-        field_sqm_above
-        
-        label_sqm_basement
-        field_sqm_basement
-        
-        label_sqm_lot
-        field_sqm_lot
-        
-        
-         """
+        self.label_sqm_living = QLabel("Living Area (sqm):")
+        self.field_sqm_living = QLineEdit()
+        self.field_sqm_living.setValidator(validator)
 
-        self.label2 = QLabel("un alt numar:")
-        self.text_field2 = QLineEdit()
-        self.text_field2.setValidator(validator)
+        self.label_floors = QLabel("Floors:")
+        self.field_floors = QLineEdit()
+        self.field_floors.setValidator(validator)
 
-        field_layout2.addWidget(self.label2)
-        field_layout2.addWidget(self.text_field2)
+        self.label_condition = QLabel("Condition:")
+        self.field_condition = QLineEdit()
+        self.field_condition.setValidator(validator)
+
+        self.label_grade = QLabel("Grade:")
+        self.field_grade = QLineEdit()
+        self.field_grade.setValidator(validator)
+
+        self.label_yr_built = QLabel("Year Built:")
+        self.field_yr_built = QLineEdit()
+        self.field_yr_built.setValidator(validator)
+
+        self.label_yr_renovated = QLabel("Year Renovated:")
+        self.field_yr_renovated = QLineEdit()
+        self.field_yr_renovated.setValidator(validator)
+
+        self.label_sqm_above = QLabel("Above Area (sqm):")
+        self.field_sqm_above = QLineEdit()
+        self.field_sqm_above.setValidator(validator)
+
+        self.label_sqm_basement = QLabel("Basement Area (sqm):")
+        self.field_sqm_basement = QLineEdit()
+        self.field_sqm_basement.setValidator(validator)
+
+        self.label_sqm_lot = QLabel("Lot Area (sqm):")
+        self.field_sqm_lot = QLineEdit()
+        self.field_sqm_lot.setValidator(validator)
+
+        layout_bedrooms.addWidget(self.label_bedrooms)
+        layout_bedrooms.addWidget(self.field_bedrooms)
+
+        layout_bathrooms.addWidget(self.label_bathrooms)
+        layout_bathrooms.addWidget(self.field_bathrooms)
+
+        layout_sqm_living.addWidget(self.label_sqm_living)
+        layout_sqm_living.addWidget(self.field_sqm_living)
+
+        layout_floors.addWidget(self.label_floors)
+        layout_floors.addWidget(self.field_floors)
+
+        layout_condition.addWidget(self.label_condition)
+        layout_condition.addWidget(self.field_condition)
+
+        layout_grade.addWidget(self.label_grade)
+        layout_grade.addWidget(self.field_grade)
+
+        layout_yr_built.addWidget(self.label_yr_built)
+        layout_yr_built.addWidget(self.field_yr_built)
+
+        layout_yr_renovated.addWidget(self.label_yr_renovated)
+        layout_yr_renovated.addWidget(self.field_yr_renovated)
+
+        layout_sqm_above.addWidget(self.label_sqm_above)
+        layout_sqm_above.addWidget(self.field_sqm_above)
+
+        layout_sqm_basement.addWidget(self.label_sqm_basement)
+        layout_sqm_basement.addWidget(self.field_sqm_basement)
+
+        layout_sqm_lot.addWidget(self.label_sqm_lot)
+        layout_sqm_lot.addWidget(self.field_sqm_lot)
 
         # Adăugarea field_layout1 și butonului în left_layout
-        left_layout.addLayout(field_layout1)
-        left_layout.addLayout(field_layout2)
+        left_layout.addLayout(layout_bedrooms)
+        left_layout.addLayout(layout_bathrooms)
+        left_layout.addLayout(layout_sqm_living)
+        left_layout.addLayout(layout_floors)
+        left_layout.addLayout(layout_condition)
+        left_layout.addLayout(layout_grade)
+        left_layout.addLayout(layout_yr_built)
+        left_layout.addLayout(layout_yr_renovated)
+        left_layout.addLayout(layout_sqm_above)
+        left_layout.addLayout(layout_sqm_basement)
+        left_layout.addLayout(layout_sqm_lot)
+
         self.submit_button = QPushButton("Submit")
         left_layout.addWidget(self.submit_button)
 
@@ -123,9 +157,46 @@ class MapWindow(QMainWindow):
 
     # Slot pentru a prelua și afișa valoarea din text_field1
     def print_value(self):
-        value1 = self.text_field1.text()
-        value2 = self.text_field2.text()
-        print(f"Valoarea introdusă este: {value1} {value2}")
+        bedrooms = self.field_bedrooms.text()
+        bathrooms = self.field_bathrooms.text()
+        sqm_living = self.field_sqm_living.text()
+        floors = self.field_floors.text()
+        condition = self.field_condition.text()
+        grade = self.field_grade.text()
+        yr_built = self.field_yr_built.text()
+        yr_renovated = self.field_yr_renovated.text()
+        sqm_above = self.field_sqm_above.text()
+        sqm_basement = self.field_sqm_basement.text()
+        sqm_lot = self.field_sqm_lot.text()
+
+        # read x and y from the file coordinates.txt
+        with open("coordinates.txt", "r") as file:
+            coords = file.read().splitlines()
+            # if coords is empty, set default values to 0
+            if not coords:
+                coords_x = 0
+                coords_y = 0
+            else:
+                coords = coords[0].split(",")
+                coords_x = coords[0]
+                coords_y = coords[1]
+
+        if coords_x == 0:
+            return
+
+        print(f"Bedrooms: {bedrooms}")
+        print(f"Bathrooms: {bathrooms}")
+        print(f"Living Area (sqm): {sqm_living}")
+        print(f"Floors: {floors}")
+        print(f"Condition: {condition}")
+        print(f"Grade: {grade}")
+        print(f"Year Built: {yr_built}")
+        print(f"Year Renovated: {yr_renovated}")
+        print(f"Above Area (sqm): {sqm_above}")
+        print(f"Basement Area (sqm): {sqm_basement}")
+        print(f"Lot Area (sqm): {sqm_lot}")
+        print(f"X: {coords_x}")
+        print(f"Y: {coords_y}")
 
 
 if __name__ == '__main__':
