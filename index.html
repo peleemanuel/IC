@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Interactive Map with Leaflet</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Include qwebchannel.js only if needed and available -->
+    <script>
+      if (typeof qt !== "undefined") {
+        document.write(
+          '<script src="qrc:///qtwebchannel/qwebchannel.js"><\/script>'
+        );
+      }
+    </script>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map = L.map("map").setView([45.747684, 21.226372], 15);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+      }).addTo(map);
+
+      var currentMarker = null;
+      map.on("click", function (e) {
+        if (currentMarker) {
+          map.removeLayer(currentMarker);
+        }
+        currentMarker = L.marker(e.latlng).addTo(map);
+
+        console.log("Map clicked at:", e.latlng.lat, e.latlng.lng);
+
+        if (typeof qt !== "undefined") {
+          // Use QWebChannel to communicate with Python
+          new QWebChannel(qt.webChannelTransport, function (channel) {
+            var backend = channel.objects.backend;
+            console.log(
+              "Calling backend.setCoordinates with:",
+              e.latlng.lat,
+              e.latlng.lng
+            );
+            backend.setCoordinates(e.latlng.lat, e.latlng.lng);
+          });
+        } else {
+          // Use fetch to send coordinates to the server
+          fetch("/save_coordinates", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lat: e.latlng.lat, lng: e.latlng.lng }),
+          })
+            .then((response) => response.json())
+            .then((data) => console.log("Server response:", data));
+        }
+      });
+    </script>
+  </body>
+</html>
